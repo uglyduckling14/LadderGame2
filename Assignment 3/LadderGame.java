@@ -17,69 +17,59 @@ public class LadderGame extends Queue {
         if(end.length()!=start.length()){
             System.out.println("Words are of differing lengths!");
         }
-        Queue<String> queue = new Queue<>();
-        queue.enqueue(start);
-        String history=start + ",";
-        int counter = 0;
-        int enqueue = 1;
-        while(!queue.isEmpty()){
-            counter++;
-            enqueue++;
-            int size = queue.getSize();
-            //System.out.println(queue.getCurrent());
-            for(int i = 0; i<size; i++) {
-                String testWord = queue.dequeue();
-                //history += testWord+", ";
-                if(testWord.equals(end)){
-                    history += testWord;
-                    //System.out.println(queue.getSize());
-                    System.out.println(start + "->" + end + " : " + counter + " Moves [" + history + "] total enqueues " + enqueue);
-                    return;
-                }
-                ArrayList<String> oneDif = oneAway(testWord, true);
-                //System.out.println(oneDif.size());
-                for (String one : oneDif) {
-                    enqueue++;
-                    String tempHistory =testWord+", ";
-                    //partial.enqueue(one);
-                    tempHistory+=one;
-                    if (end.equals(one)) {
-                        //history += one;
-                        //System.out.println(queue.getSize());
-                        System.out.println(start + "->" + end + " : " + counter + " Moves [" + history+tempHistory + "] total enqueues " + enqueue);
-                        return;
-                    }
+        ArrayList<String> clone = (ArrayList<String>)organized.get(start.length()).clone();
+        Queue<WordInfo> queue = new Queue<>();
+        boolean found = false;
+        WordInfo solution = null;
+        queue.enqueue(new WordInfo(start,0));
+        int count =1;
+        this.organized.get(start.length()).remove(start);
 
-                    queue.enqueue(one);
+        while(!queue.isEmpty()&&!found){
+            WordInfo current = queue.dequeue();
+            var oneAway = this.oneAway(current.getWord(),true);
+            for(var word:oneAway){
+                var test = new WordInfo(word,current.getMoves()+1, current.getHistory()+" "+word);
+                if(word.equals(end)){
+                    found=true;
+                    solution = test;
+                } else{
+                    queue.enqueue(test);
+                    count++;
                 }
             }
-
         }
-        System.out.println(start + "->"+ end + ": No ladder was found");
+        if(found){
+            System.out.println(start+" -> "+end + solution.getMoves() +"Moves ["+solution.getHistory()+"] total enqueues "+count );
+        }else{
+            System.out.println(start + "->"+ end + ": No ladder was found");
+        }
+        this.organized.set(start.length(),clone);
     }
     public ArrayList<String> oneAway(String word, boolean withRemoval) {
         //allWords.remove(word);
-        char[] testWord = word.toCharArray();
-        ArrayList<String> oneAway = new ArrayList<>();
-        for(int i =0; i< word.length();i++){
-            char original = testWord[i];
-            for(char c = 'a'; c<='z'; c++) {
-                testWord[i] = c;
-                if (!String.valueOf(testWord).equals(word)) {
-                    if (!allWords.contains(String.valueOf(testWord))) {
-                        continue;
-                    } else {
-                        oneAway.add(String.valueOf((testWord)));
-                    }
-                    //System.out.println(testWord);
-                    if (withRemoval) {
-                        allWords.remove(String.valueOf(testWord));
-                    }
-                }
+        ArrayList<String> words = new ArrayList<>();
+        for(String possible : organized.get(word.length())){
+            if(diff(word,possible)==1){
+                words.add(possible);
             }
-            testWord[i]=original;
         }
-        return oneAway;
+        if(withRemoval){
+            organized.get(word.length()).removeAll(words);
+        }
+        return words;
+    }
+    private int diff(String word, String test){
+        if (word.length() != test.length()) {
+            return -1;
+        }
+        int diff = 0;
+        for(int i =0; i<word.length(); i++){
+            if(word.charAt(i)!=test.charAt(i)){
+                diff++;
+            }
+        }
+        return diff;
     }
 
     public void listWords(int length, int howMany) {
@@ -93,17 +83,17 @@ public class LadderGame extends Queue {
      */
     private void readDictionary(String dictionaryFile) {
         File file = new File(dictionaryFile);
-//        ArrayList<String> allWords = new ArrayList<>();
+        ArrayList<String> allWord = new ArrayList<>();
 
         //
         // Track the longest word, because that tells us how big to make the array.
         int longestWord = 0;
         try (Scanner input = new Scanner(file)) {
             //
-            // Start by reading all the words into memory.
+             // Start by reading all the words into memory.
             while (input.hasNextLine()) {
                 String word = input.nextLine().toLowerCase();
-                allWords.add(word);
+                allWord.add(word);
                 longestWord = Math.max(longestWord, word.length());
             }
             for(int i = 0; i< longestWord; i++){

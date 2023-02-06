@@ -1,0 +1,3 @@
+|Date|                                              |Time|
+|2/05| Wrote partial pseudocode for deleteMin, redid|1 hr|
+|    | LadderGame too.                              |
