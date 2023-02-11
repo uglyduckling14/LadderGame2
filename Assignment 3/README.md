@@ -2,12 +2,16 @@
 
 ## Introduction:
 
-I will be redoing my word ladders assignment, making it more efficient.
+I will be redoing my word ladders assignment, making it more efficient. I will determine the "best" word ladder by 
+calculating a priority value and assigning it to the word.
+
+Then I will use that priority value and store it in an AVL tree. The word with the "highest" priority value will then be 
+selected as the new word ladder candidate.
 
 ### AVL CLASS:
 
 Fix Assignment 1 code.
-#### public void printTree(){
+#### public void printTree(String label){
     /*          43(0)
             37(1)
                 31(0)
@@ -22,7 +26,23 @@ Fix Assignment 1 code.
             2(1)
                 1(0)
     */
-    use recursion .toString() function
+    System.out.println(label);
+    String printed = printTree(String tree,AvlNode node, int height, int indent);
+    System.out.println(printed);
+}
+#### private String printTree(String tree, AvlNode node, int height, int indent){
+    if(node==null){
+        return "";
+    }
+    tree = printTree(tree,node.right,node.right.height,indent+=2);
+    String indentTree="";
+    for(int i = 0; i<indent; i++){
+        indentTree += " ";
+    }
+    indent+=2;
+    tree = tree + indentTree+node.key+"("+height+")"+"\n";
+    return tree + printTree(tree, node.left, node.left.height,indent);
+
 }
 #### public E deleteMin(){
     /*The Tree after deleteMin
@@ -64,5 +84,27 @@ Fix Assignment 1 code.
 					node = temp;
         }
         //check to make sure its AVL and rotate as needed
+        balance(AVL node);
     }
 }
+#### private int getBalance(AVL node){
+    if(node == null){
+        return 0;
+    }
+    return height(node.left)-height(node.right);
+}
+
+### LADDERGAME ABSTRACT CLASS:
+Convert everything to abstract methods.
+
+### LADDERGAMEEXHAUSTIVE CLASS:
+
+Copy Assignment 1 code.
+### WORDINFOPRIORITY CLASS:
+Priority Calculation:
+* NOTE: The lower the expected total work, the higher the priority
+current ladder.length() + dif(current,end)
+
+private WordInfoPriority priority = new WordInfoPriority;
+
+### LADDERGAMEPRIORITY CLASS:

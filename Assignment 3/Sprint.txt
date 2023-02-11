@@ -1,3 +1,6 @@
-|Date|                                              |Time|
-|2/05| Wrote partial pseudocode for deleteMin, redid|1 hr|
-|    | LadderGame too.                              |
+|Date|                                                          |Time |
+|2/05| Wrote partial pseudocode for deleteMin, redid            |1 hr |
+|    | LadderGame too.                                          |     |
+|2/07| Finished reading instructions. Wrote printTree()         |1 hr |
+|2/08| Implemented printTree(). Attempted deleteMin             |2 hr |
+|2/10| Tried to do deleteMin                                    |2 hr |

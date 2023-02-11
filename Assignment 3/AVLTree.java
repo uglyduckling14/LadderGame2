@@ -1,5 +1,7 @@
 import java.lang.*;
 
+import static java.lang.Math.max;
+
 /**
  * Implements an AVL tree.
  * Note that all "matching" is based on the compareTo method.
@@ -28,7 +30,53 @@ public class AVLTree<E extends Comparable<? super E>> {
         // Note: I only put this code here to have it compile.
         // This will NOT work if root is null.  You should return
         // the actual min value found.
-        return root.value;
+
+        E smallest = findSmallest(root);
+        //System.out.println(smallest+" "+root.value);
+        deleteMin(smallest,root);
+        return smallest;
+    }
+    private AvlNode deleteMin(E node,AvlNode current) {
+        if (current == null) {
+            return null;
+        }
+        //System.out.println(root.value);
+        //root= balance(root);
+        if(node.compareTo(current.value) < 0){
+            //balance(root);
+            //System.out.println(root.value+"left");
+            current.left = deleteMin(node,current.left);
+            //root=balance(root);
+        }else if(node.compareTo(current.value) > 0){
+            //balance(root);
+            //System.out.println(root.value+"right");
+            current.right = deleteMin(node,current.right);
+            //root = balance(root);
+        }else{
+            if(current.left==null ||current.right==null){//one or zero child
+                AvlNode temp = null;
+                if(temp == current.left){
+                    temp = current.right;
+                }else{
+                    temp = current.left;
+                }
+                if(temp == null){
+                    temp = current;
+                    current = null;
+                }else{
+                    current = temp;
+                }
+                //root=balance(root);
+            }
+        }
+        return balance(current);
+
+    }
+    private E findSmallest(AvlNode node){
+        while(node.left!=null){
+            node=node.left;
+        }
+        return node.value;
     }
 
     /**
@@ -74,7 +122,21 @@ public class AVLTree<E extends Comparable<? super E>> {
      * Print the tree contents in sorted order.
      */
     public void printTree(String label) {
-        // TODO: Write some good stuff here
+        System.out.println(label);
+        System.out.println(printTree("",root,0));
+    }
+    private String printTree(String tree, AvlNode node, int indent){
+        if(node==null){
+            return "";
+        }
+        tree = printTree(tree,node.right,indent+=1);
+        String indentTree="";
+        for(int i = 0; i<indent; i++){
+            indentTree += "\t";
+        }
+        tree = tree + indentTree+node.value+"("+node.height+")"+"\n";
+        return tree + printTree(tree, node.left,indent);
+
     }
 
     private static final int ALLOWED_IMBALANCE = 1;
@@ -84,7 +146,7 @@ public class AVLTree<E extends Comparable<? super E>> {
         if (node == null) {
             return null;
         }
-
+        //System.out.println(node.value);
         if (height(node.left) - height(node.right) > ALLOWED_IMBALANCE) {
             if (height(node.left.left) >= height(node.left.right)) {
                 node = rightRotation(node);
@@ -99,7 +161,7 @@ public class AVLTree<E extends Comparable<? super E>> {
             }
         }
 
-        node.height = Math.max(height(node.left), height(node.right)) + 1;
+        node.height = max(height(node.left), height(node.right)) + 1;
         return node;
     }
 
@@ -186,8 +248,8 @@ public class AVLTree<E extends Comparable<? super E>> {
         AvlNode theLeft = node.left;
         node.left = theLeft.right;
         theLeft.right = node;
-        node.height = Math.max(height(node.left), height(node.right)) + 1;
-        theLeft.height = Math.max(height(theLeft.left), node.height) + 1;
+        node.height = max(height(node.left), height(node.right)) + 1;
+        theLeft.height = max(height(theLeft.left), node.height) + 1;
         return theLeft;
     }
 
@@ -200,8 +262,8 @@ public class AVLTree<E extends Comparable<? super E>> {
         AvlNode theRight = node.right;
         node.right = theRight.left;
         theRight.left = node;
-        node.height = Math.max(height(node.left), height(node.right)) + 1;
-        theRight.height = Math.max(height(theRight.right), node.height) + 1;
+        node.height = max(height(node.left), height(node.right)) + 1;
+        theRight.height = max(height(theRight.right), node.height) + 1;
         return theRight;
     }
 

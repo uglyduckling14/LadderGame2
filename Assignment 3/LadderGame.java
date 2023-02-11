@@ -2,81 +2,17 @@ import java.io.File;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class LadderGame extends Queue {
+public abstract class LadderGame extends Queue {
     ArrayList<ArrayList<String>> organized = new ArrayList<>();
     ArrayList<String> allWords = new ArrayList<>();
     public LadderGame(String dictionaryFile) {
 
         readDictionary(dictionaryFile);
     }
-    public void play(String start, String end) {
-        if(!allWords.contains(end) || !allWords.contains(start)){
-            System.out.println(start + "->"+ end + ": No ladder was found");
-            return;
-        }
-        if(end.length()!=start.length()){
-            System.out.println("Words are of differing lengths!");
-        }
-        ArrayList<String> clone = (ArrayList<String>)organized.get(start.length()).clone();
-        Queue<WordInfo> queue = new Queue<>();
-        boolean found = false;
-        WordInfo solution = null;
-        queue.enqueue(new WordInfo(start,0));
-        int count =1;
-        this.organized.get(start.length()).remove(start);
+    public abstract void play(String start, String end);
+    public abstract ArrayList<String> oneAway(String word, boolean withRemoval);
 
-        while(!queue.isEmpty()&&!found){
-            WordInfo current = queue.dequeue();
-            var oneAway = this.oneAway(current.getWord(),true);
-            for(var word:oneAway){
-                var test = new WordInfo(word,current.getMoves()+1, current.getHistory()+" "+word);
-                if(word.equals(end)){
-                    found=true;
-                    solution = test;
-                } else{
-                    queue.enqueue(test);
-                    count++;
-                }
-            }
-        }
-        if(found){
-            System.out.println(start+" -> "+end + solution.getMoves() +"Moves ["+solution.getHistory()+"] total enqueues "+count );
-        }else{
-            System.out.println(start + "->"+ end + ": No ladder was found");
-        }
-        this.organized.set(start.length(),clone);
-    }
-    public ArrayList<String> oneAway(String word, boolean withRemoval) {
-        //allWords.remove(word);
-        ArrayList<String> words = new ArrayList<>();
-        for(String possible : organized.get(word.length())){
-            if(diff(word,possible)==1){
-                words.add(possible);
-            }
-        }
-        if(withRemoval){
-            organized.get(word.length()).removeAll(words);
-        }
-        return words;
-    }
-    private int diff(String word, String test){
-        if (word.length() != test.length()) {
-            return -1;
-        }
-        int diff = 0;
-        for(int i =0; i<word.length(); i++){
-            if(word.charAt(i)!=test.charAt(i)){
-                diff++;
-            }
-        }
-        return diff;
-    }
-
-    public void listWords(int length, int howMany) {
-        for(int i =0; i<howMany;i++){
-            System.out.println(organized.get(length-2).get(i));
-        }
-    }
+    public abstract void listWords(int length, int howMany);
 
     /*
         Reads a list of words from a file, putting all words of the same length into the same array.
@@ -108,7 +44,7 @@ public class LadderGame extends Queue {
 
         }
         catch (java.io.IOException ex) {
-            System.out.println("An error occurred trying to read the dictionary: " + ex);
+            //System.out.println("An error occurred trying to read the dictionary: " + ex);
         }
     }
 }
