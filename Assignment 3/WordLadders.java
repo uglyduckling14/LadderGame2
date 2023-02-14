@@ -1,15 +1,15 @@
 public class WordLadders {
     public static void main(String[] args) {
-        //testAvlTree();
-        ladderGame();
+        testAvlTree();
+        //ladderGame();
     }
 
     private static void ladderGame() {
-        //LadderGame gamePriority = new LadderGamePriority("dictionary.txt");
-        LadderGame gameExhaustive = new LadderGameExhaustive("dictionary.txt");
+ //       LadderGame gamePriority = new LadderGamePriority("dictionary.txt");
+//        LadderGame gameExhaustive = new LadderGameExhaustive("dictionary.txt");
 
-        gameExhaustive.play("kiss", "woof");
-//        gamePriority.play("kiss", "woof");
+//        gameExhaustive.play("kiss", "woof");
+   //    gamePriority.play("kiss", "woof");
 //        System.out.println();
 //
 //        gameExhaustive.play("rock", "numb");
@@ -45,10 +45,10 @@ public class WordLadders {
         AVLTree<Dwarf> dwarfTree = new AVLTree<>();
         //System.out.println("x");
 
-//        String[] nameList = {"Snowflake", "Sneezy", "Doc", "Grumpy", "Bashful", "Dopey", "Happy", "Doc", "Grumpy", "Bashful", "Doc", "Grumpy", "Bashful"};
-//        for (var name : nameList) {
-//            dwarfTree.insert(new Dwarf(name));
-//        }
+        String[] nameList = {"Snowflake", "Sneezy", "Doc", "Grumpy", "Bashful", "Dopey", "Happy", "Doc", "Grumpy", "Bashful", "Doc", "Grumpy", "Bashful"};
+        for (var name : nameList) {
+            dwarfTree.insert(new Dwarf(name));
+        }
 
         Integer[] primeList = { 1, 2, 3, 5, 7, 11, 13, 17, 23, 29, 31, 37, 43};
         for (var number : primeList) {
@@ -64,15 +64,16 @@ public class WordLadders {
 //        primeTree.deleteMin();
 //        primeTree.printTree("The Tree after deleteMin");
 
-//        System.out.println("-- Calling deleteMin on dwarfTree until it is empty");
-//        while (!dwarfTree.isEmpty()) {
-//            System.out.printf("%s\n", dwarfTree.deleteMin());
-//        }
-//        System.out.println("-- Calling deleteMin on primeTree until it is empty");
-//        while (!primeTree.isEmpty()) {
-//            var max = primeTree.findMax();
-//            System.out.printf("%d[%d] ", primeTree.deleteMin(), max);
-//        }
-//        System.out.println();
+        System.out.println("-- Calling deleteMin on dwarfTree until it is empty");
+        while (!dwarfTree.isEmpty()) {
+            //dwarfTree.printTree("x");
+            System.out.printf("%s\n", dwarfTree.deleteMin());
+        }
+        System.out.println("-- Calling deleteMin on primeTree until it is empty");
+        while (!primeTree.isEmpty()) {
+            var max = primeTree.findMax();
+            System.out.printf("%d[%d] ", primeTree.deleteMin(), max);
+        }
+        System.out.println();
     }
 }

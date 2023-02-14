@@ -18,7 +18,7 @@ public class LadderGameExhaustive extends LadderGame {
         if(end.length()!=start.length()){
             System.out.println("Words are of differing lengths!");
         }
-        ArrayList<String> clone = (ArrayList<String>)organized.get(start.length()).clone();
+        ArrayList<String> clone = (ArrayList<String>)organized.get(start.length()-2).clone();
         Queue<WordInfo> queue = new Queue<>();
         boolean found = false;
         WordInfo solution = null;

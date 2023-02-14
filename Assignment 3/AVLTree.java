@@ -25,11 +25,6 @@ public class AVLTree<E extends Comparable<? super E>> {
     }
 
     public E deleteMin() {
-        // TODO: Write some good stuff here
-
-        // Note: I only put this code here to have it compile.
-        // This will NOT work if root is null.  You should return
-        // the actual min value found.
 
         E smallest = findSmallest(root);
         //System.out.println(smallest+" "+root.value);
@@ -42,35 +37,43 @@ public class AVLTree<E extends Comparable<? super E>> {
         }
         //System.out.println(root.value);
         //root= balance(root);
-        if(node.compareTo(current.value) < 0){
-            //balance(root);
-            //System.out.println(root.value+"left");
-            current.left = deleteMin(node,current.left);
-            //root=balance(root);
-        }else if(node.compareTo(current.value) > 0){
+        if(current.left!=null){
             //balance(root);
             //System.out.println(root.value+"right");
-            current.right = deleteMin(node,current.right);
+            current.left = deleteMin(node,current.left);
             //root = balance(root);
         }else{
-            if(current.left==null ||current.right==null){//one or zero child
+            if(current.left==null || current.right==null){//one or zero child
                 AvlNode temp = null;
                 if(temp == current.left){
                     temp = current.right;
                 }else{
                     temp = current.left;
                 }
-                if(temp == null){
+                if(temp==null){
                     temp = current;
                     current = null;
-                }else{
+                }else {
                     current = temp;
                 }
                 //root=balance(root);
+            }else{
+                AvlNode temp = findSmallestNode(current.right);
+                //System.out.println(temp.left);
+                current.value=temp.value;
+                current.right = deleteMin(temp.value, current.right);
+
             }
         }
-        return balance(current);
+        root = balance(current);
+        return root;
 
+    }
+    private AvlNode findSmallestNode(AvlNode node){
+        if(node.left!=null){
+            node = node.left;
+        }
+        return node;
     }
     private E findSmallest(AvlNode node){
         while(node.left!=null){
@@ -146,7 +149,6 @@ public class AVLTree<E extends Comparable<? super E>> {
         if (node == null) {
             return null;
         }
-        //System.out.println(node.value);
         if (height(node.left) - height(node.right) > ALLOWED_IMBALANCE) {
             if (height(node.left.left) >= height(node.left.right)) {
                 node = rightRotation(node);

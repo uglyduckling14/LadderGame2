@@ -100,11 +100,64 @@ Convert everything to abstract methods.
 ### LADDERGAMEEXHAUSTIVE CLASS:
 
 Copy Assignment 1 code.
-### WORDINFOPRIORITY CLASS:
+### WORDINFOPRIORITY CLASS implements Comparable:
 Priority Calculation:
 * NOTE: The lower the expected total work, the higher the priority
 current ladder.length() + dif(current,end)
 
-private WordInfoPriority priority = new WordInfoPriority;
-
+##### private WordInfoPriority priority = new WordInfoPriority;
+private int estimatedWork= moves+ diff(test, word);
+##### public WordInfoPriority(String word, int moves, int estimatedWork){
+    //this.word = word;
+    //this.moves = moves;
+    //this.estimatedWork = estimatedWork;
+}
+#### public WordInfoPriority(String word, int moves, int estimatedWork, String history){
+    //this.word = word;
+    //this.moves = moves;
+    //this.estimatedWork;
+    //this.history = history;
+}
+#### public int compareTo(E word){
+    if( priority.estimatedWork vs word.estimatedWork);
+}
+#### private int diff(String test, String word);
 ### LADDERGAMEPRIORITY CLASS:
+    public void play(String start, String end){
+        if(!allWords.contains(end) || !allWords.contains(start)){//checks to make sure start and end are not the same.
+            System.out.println(start + "->"+ end + ": No ladder was found");
+            return;
+        }
+        if(end.length()!=start.length()){
+            System.out.println("Words are of differing lengths!");
+        }
+        ArrayList<String> clone = (ArrayList<String>)organized.get(start.length()-2).clone();//keeps an copy of the array in case of deletion
+        AVLTree<WordInfoPriority> node = new AVLTree<>();
+        boolean found = false;
+        WordInfoPriority solution = null;
+        node.insert(new WordInfo(start,0));//insert start
+        int count =1;
+        this.organized.get(start.length()-2).remove(start);
+        while(!node.isEmpty()&&!found){
+            WordInfoPriority current = node.deleteMin();//finds the highest priority solution.
+            var oneAway = this.oneAway(current.getWord(),true);//list of words one away from highest priority solution
+            for(var word:oneAway){//adds each word to avl tree
+                var test = new WordInfoPriority(word,current.getMoves()+1, current.getHistory()+" "+word, word.length-moves);
+                if(word.equals(end)){
+                    found = true;
+                    solution = current;
+                }else{
+                    node.insert(test);
+                    count++;
+                }
+            }
+        }
+        if(found){
+            System.out.println(start+" -> "+end +" " + solution.getMoves() +" Moves ["+solution.getHistory()+"] total enqueues "+count );
+        }else{
+            System.out.println(start + "->"+ end + ": No ladder was found");
+        }
+        this.organized.set(start.length()-2,clone);
+    }
+#### public int dif
+#### public ArrayList oneAway

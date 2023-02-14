@@ -1,9 +1,9 @@
-public abstract class WordInfoPriority<E> implements Comparable {
+public class WordInfoPriority implements Comparable<WordInfoPriority> {
     private String word;
     private int moves;
     private String history;
     private int estimatedWork;
-    private WordInfoPriority priority;
+    //WordInfoPriority priority;
 
     public WordInfoPriority(String word, int moves, int estimatedWork){
         this.word = word;
@@ -44,5 +44,18 @@ public abstract class WordInfoPriority<E> implements Comparable {
     public String toString() {
         return String.format("Word %s Moves %d : History[%s]",
                 word, moves, history);
+    }
+
+    @Override
+    public int compareTo(WordInfoPriority o) {
+        if (o.estimatedWork < estimatedWork) {
+            return -1;
+        }else if(o.estimatedWork> estimatedWork){
+            return 1;
+        }
+        return 0;
+    }
+    public int getEstimatedWork(){
+        return this.estimatedWork;
     }
 }

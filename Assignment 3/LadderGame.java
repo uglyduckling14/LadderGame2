@@ -12,8 +12,6 @@ public abstract class LadderGame extends Queue {
     public abstract void play(String start, String end);
     public abstract ArrayList<String> oneAway(String word, boolean withRemoval);
 
-    public abstract void listWords(int length, int howMany);
-
     /*
         Reads a list of words from a file, putting all words of the same length into the same array.
      */
