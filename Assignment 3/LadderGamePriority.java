@@ -12,6 +12,7 @@ public class LadderGamePriority extends LadderGame{
     }
 
     public void play(String start, String end){
+        System.out.println("Seeking A* solution for "+start+" -> "+end);
         if(!allWords.contains(end) || !allWords.contains(start)){//checks to make sure start and end are not the same.
             System.out.println(start + "->"+ end + ": No ladder was found");
             return;
@@ -22,8 +23,9 @@ public class LadderGamePriority extends LadderGame{
         ArrayList<String> clone = (ArrayList<String>)organized.get(start.length()-2).clone();//keeps a copy of the array in case of deletion
         AVLTree<WordInfoPriority> node = new AVLTree<>();
         boolean found = false;
-        WordInfoPriority solution = null;
-        node.insert(new WordInfoPriority(start, 0, start.length()+diff(start,end)));//insert start
+        WordInfoPriority solution= new WordInfoPriority(start, 0, start.length()-diff(start,end),start);
+        node.insert(solution);//insert start
+        solution=null;
         //node.printTree("test");
         //System.out.println(node);
         int count =1;
@@ -31,15 +33,12 @@ public class LadderGamePriority extends LadderGame{
         while(!node.isEmpty()&&!found){
             //node.printTree("test");
             WordInfoPriority current = node.deleteMin();//finds the highest priority solution.
-            System.out.println(current.getEstimatedWork()+"  "+current);
-            node.printTree("test");
-            System.out.println();
             var oneAway = this.oneAway(current.getWord(),true);//list of words one away from highest priority solution
             for(var word:oneAway){//adds each word to avl tree
-                var test = new WordInfoPriority(word,current.getMoves()+1,word.length()+current.getMoves(), current.getHistory()+" "+word);
+                var test = new WordInfoPriority(word,current.getMoves()+1,word.length()-diff(end,word), current.getHistory()+" "+word);
                 if(word.equals(end)){
                     found = true;
-                    solution = current;
+                    solution = test;
                 }else{
                     node.insert(test);
                     count++;
@@ -47,7 +46,7 @@ public class LadderGamePriority extends LadderGame{
             }
         }
         if(found){
-            System.out.println(start+" -> "+end +" " + solution.getMoves() +" Moves ["+solution.getHistory()+"] total enqueues "+count );
+            System.out.println(start+" -> "+end +" " + solution.getMoves() +" Moves ["+solution.getHistory()+"] total enqueues "+(count+1) );
         }else{
             System.out.println(start + "->"+ end + ": No ladder was found");
         }

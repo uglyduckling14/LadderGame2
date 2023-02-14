@@ -10,7 +10,7 @@ public class LadderGameExhaustive extends LadderGame {
         readDictionary(dictionaryFile);
     }
     public void play(String start, String end) {
-        System.out.println("Seeking Exhaustive solution for " +start + "->"+ end);
+        System.out.println("Seeking Exhaustive solution for " +start + " -> "+ end);
         if(!allWords.contains(end) || !allWords.contains(start)){
             System.out.println(start + "->"+ end + ": No ladder was found");
             return;
@@ -42,7 +42,7 @@ public class LadderGameExhaustive extends LadderGame {
             }
         }
         if(found){
-            System.out.println(start+" -> "+end +" " + solution.getMoves() +" Moves ["+solution.getHistory()+"] total enqueues "+count );
+            System.out.println(start+" -> "+end +" " + solution.getMoves() +" Moves ["+solution.getHistory()+"] total enqueues "+(count+1) );
         }else{
             System.out.println(start + "->"+ end + ": No ladder was found");
         }

@@ -103,7 +103,7 @@ Copy Assignment 1 code.
 ### WORDINFOPRIORITY CLASS implements Comparable:
 Priority Calculation:
 * NOTE: The lower the expected total work, the higher the priority
-current ladder.length() + dif(current,end)
+current ladder.length() - dif(current,end)
 
 ##### private WordInfoPriority priority = new WordInfoPriority;
 private int estimatedWork= moves+ diff(test, word);
@@ -161,3 +161,12 @@ private int estimatedWork= moves+ diff(test, word);
     }
 #### public int dif
 #### public ArrayList oneAway
+
+### Major Changes:
+* Made sure that for duplicate values I had taken into account that they may have duplicate children.
+* returned balance(root) in deleteMin() instead of balance(current)
+* Created findSmallestNode() method
+
+### Future Edits:
+There is a lot of redundant code, especially in the AVLTree deleteMin() method, but it works and this assignment is due in
+4 hours.

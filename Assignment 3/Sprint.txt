@@ -4,3 +4,6 @@
 |2/07| Finished reading instructions. Wrote printTree()         |1 hr |
 |2/08| Implemented printTree(). Attempted deleteMin             |2 hr |
 |2/10| Tried to do deleteMin                                    |2 hr |
+|2/11| Implemented WordInfoPriority                             |1 hr |
+|2/12| Implemented LadderGamePriority                           |2 hr |
+|2/13| Fixed deleteMin and completed LadderPriority             |2 hr |
